@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+
+  <!-- <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script> -->
+
+</head>
+
+<body>
+  <style>
+    html{
+        height: 100%;
+        overflow: hidden;
+        border-radius: 10px;
+        font-family: Meiryo;
+        box-sizing: border-box;
+        background-repeat: no-repeat;
+        background-position: bottom right;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      #overlay{
+        width: 100%;
+        height: 100%;
+        margin-top: 35px;
+        color: #D3D4C2;
+        position: inherit;
+        border-radius: 0px;
+      }
+
+      #header{
+        top: 3px;
+        width: 100%;
+        height: 100%;
+        display: none;
+        font-size: 14px;
+        position: relative;
+        vertical-align: middle;
+      }
+
+      #source{
+        display: none;
+      }
+
+      #content2{
+        width: 100%;
+        height: 1px;
+        margin: 0px auto;
+        background: #000;
+          shadow: 0px 1px 0px rgb(255,255,255); 
+      }
+
+      ol{
+        margin: 0;
+        padding: 5px;
+        list-style-type: none;
+      }
+
+      li .encountertitle{
+        top: 8px;
+        left: 10px;
+        float: left;
+        font-size: 18px;
+        color: #D3D4C2;
+        position: absolute;
+        text-shadow: inset 0px 1px 1px #000;
+      }
+
+      li .raiddps{
+        left: 58%;
+        top: 12px;
+        width: 70px;
+        color: #D3D4C2;
+        display: block;
+        font-size: 16px;
+        text-align: middle;
+        position: absolute;
+        letter-spacing: 7px;
+          vertical-align: middle; 
+          /* text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #D5AD6D, 0 0 30px #D5AD6D, 0 0 40px #D5AD6D, 0 0 50px #D5AD6D, 0 0 75px #D5AD6D;  */
+          text-shadow: inset 0px 1px 1px #000; 
+      }
+
+      li{
+        padding: 0px;
+        margin: 10px;
+      }
+
+      li .dps{
+        width: 48%;
+        z-index: 100;
+        max-width: 70px;
+        font-size: 16px;
+        text-align: left;
+        margin-left: 0px;
+        margin-right: 1%;
+        color: #D5AD6D;
+        position: relative;
+        display: inline-block;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 10px 10px 31px -14px rgba(0,0,0,0.75);
+        -moz-text-shadow: 10px 10px 31px -14px rgba(0,0,0,0.75);
+        -webkit-text-shadow: 10px 10px 31px -14px rgba(0,0,0,0.75);
+        background: -o-linear-gradient(transparent, transparent);
+        background: -webkit-linear-gradient(transparent, transparent), -webkit-linear-gradient(top, rgba(213,173,109,1) 0%, rgba(213,173,109,1) 26%, rgba(226,186,120,1) 35%, rgba(163,126,67,1) 45%, rgba(145,112,59,1) 61%, rgba(213,173,109,1) 100%);
+      }
+
+      li .name{
+        font-size: 14px;
+        overflow: hidden;
+        white-space: nowrap;
+        letter-spacing: 1px;
+        display: inline-block;
+        text-overflow: ellipsis;
+      }
+
+      li .duration{
+        top: 14px;
+        right: 10px;
+        float: right;
+        display: block;
+        font-size: 14px;
+        color: #D3D4C2;
+        position: absolute;
+          vertical-align: bottom; 
+        text-shadow: inset 0px 1px 1px #4d4d4d;
+      }
+
+      li .tohit{
+        z-index: 100;
+        font-size: 10px;
+        position: absolute;
+      }
+
+      li .crithit{
+        font-size: 10px;
+        position: relative;
+      }
+
+      li .hps{
+        font-size: 10px;
+        position: relative;
+      }
+
+      li .besthit{
+        font-size: 10px;
+        position: relative;
+      }
+
+      li .detail{
+        width: 102.5%;
+        font-size: 12px;
+        color: #ded7be;
+        margin-left: -10px;
+        vertical-align: top;
+        display: inline-block;
+      }
+
+      li .detail .number{
+          float: right; 
+        color: #D3D4C2;
+        display: inline-block;
+      }
+
+      li .bar{
+        width: 100%;
+        height: 1px;
+        margin: 0px;
+        display: block;
+        position: inherit;
+        animation: fullexpand ease-out;
+        -moz-animation: fullexpand ease-out;
+        -webkit-animation: fullexpand ease-out;
+        box-shadow: 0px 0px 6px 1px rgba(255,0,0,0.20);
+        -webkit-box-shadow: 0px 0px 6px 1px rgba(255,0,0,0.20);
+      }
+
+      @-moz-keyframes fullexpand{
+        0%
+        {
+          width: 0px;
+        }
+        100%
+        {
+          width: 100%;
+        }
+      }
+
+      @-webkit-keyframes fullexpand{
+        0%
+        {
+          width: 0px;
+        }
+        100%
+        {
+          width: 100%;
+        };
+      }
+
+      .job-icon{
+        top: 2px;
+        height: 20px;
+        z-index: 100;
+        margin-left: -4px;
+        position: relative;
+      }
+
+      .job-icon img{
+        width: 20px;
+        height: 20px;
+        z-index: 100;
+      }
+
+      #title{
+        z-index: 101;
+        margin-left: 10px;
+        position: absolute;
+      }
+
+      .inactive li .bar{
+        background-color: rgba(255,255,255,0.69);
+      }
+
+    </style>
+
+
+  <ol id="header">
+    <li class="raidheader">
+      <span class="raiddps"></span>
+      <span class="encountertitle"></span>
+      <span class="duration"></span>
+    </li>
+  </ol>
+  <div class="container">
+    <div class="title">
+      <span class="title"></span>
+    </div>
+    <ol id="source">
+      <li>
+        <div class="detail">
+          <span class="job-icon"></span>
+          <span class="name"></span>
+          <span class="tohit"></span>
+          <span class="crithit"></span>
+          <span class="hps"></span>
+          <span class="number"></span>
+          <div id="content2">
+            <span class="bar"></span>
+          </div>
+        </div>
+      </li>
+    </ol>
+    <ol id="overlay">
+      <li>
+        <span class="title"></span>
+        <center>
+          Awaiting Parse Data.
+        </center>
+      </li>
+    </ol>
+  </div>
+
+  <script type="text/javascript">
+    window.onload = function () {
+      'use strict';
+
+      var rows = 10,
+        rdps_max = 0,
+        row;
+
+      String.prototype.capitalize = function () {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+      }
+
+      var jobList = {
+        summons: {
+          egi: '-Egi (',
+          eos: 'Eos (',
+          selene: 'Selene (',
+          carbuncle: 'Carbuncle ('
+        },
+        companion: {
+          chocobo: ' ('
+        },
+        jobs: {
+          war: {
+            job: 'War',
+            bg: 'rgba(200,0,0,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(200,0,0,0.40)'
+          },
+          pld: {
+            job: 'Pld',
+            bg: 'rgba(94,247,235,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(94,247,235,0.20)'
+          },
+          drk: {
+            job: 'Drk',
+            bg: 'rgba(150, 80, 30,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(179,0,0,0.70)'
+          },
+          brd: {
+            job: 'Brd',
+            bg: 'rgba(216,232,85,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(216,232,85,0.20)'
+          },
+          mch: {
+            job: 'Mch',
+            bg: 'rgba(89, 168, 240,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(89, 168, 240,0.20)'
+          },
+          drg: {
+            job: 'Drg',
+            bg: 'rgba(98,151,241,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(98,151,241,0.20)'
+          },
+          mnk: {
+            job: 'Mnk',
+            bg: 'rgba(245,238,80,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(245,238,80,0.20)'
+          },
+          nin: {
+            job: 'Nin',
+            bg: 'rgba(138,0,0,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(138,0,0,0.20)'
+          },
+          sam: {
+            job: 'Sam',
+            bg: 'rgba(168,219,94,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(200,0,0,0.40)'
+          },
+          smn: {
+            job: 'Smn',
+            bg: 'rgba(168,219,94,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(168,219,94,0.20)'
+          },
+          rdm: {
+            job: 'Rdm',
+            bg: 'rgba(200,0,0,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(168,219,94,0.20)'
+          },
+          blm: {
+            job: 'Blm',
+            bg: 'rgba(146,115,202,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(146,115,202,0.20)'
+          },
+          whm: {
+            job: 'Whm',
+            bg: 'rgba(232,229,192,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(232,229,192,0.20)',
+            canHeal: true
+          },
+          sch: {
+            job: 'Sch',
+            bg: 'rgba(79,114,255,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(79,114,255,0.20)',
+            canHeal: true
+          },
+          ast: {
+            job: 'AST',
+            bg: 'rgba(218, 149, 94,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(218, 149, 94,0.20)',
+            canHeal: true
+          },
+          mrd: {
+            job: 'Mrd',
+            bg: 'rgba(200,0,0,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(200,0,0,0.20)'
+          },
+          gla: {
+            job: 'Gla',
+            bg: 'rgba(94,247,235,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(94,247,235,0.20)'
+          },
+          arc: {
+            job: 'Arc',
+            bg: 'rgba(216,232,85,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(216,232,85,0.20)'
+          },
+          lnc: {
+            job: 'Lnc',
+            bg: 'rgba(98,151,241,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(98,151,241,0.20)'
+          },
+          pgl: {
+            job: 'Pgl',
+            bg: 'rgba(245,238,80,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(245,238,80,0.20)'
+          },
+          rog: {
+            job: 'Rog',
+            bg: 'rgba(138,0,0,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(138,0,0,0.20)'
+          },
+          acn: {
+            job: 'Acn',
+            bg: 'rgba(168,219,94,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(168,219,94,0.20)',
+            canHeal: true
+          },
+          thm: {
+            job: 'Thm',
+            bg: 'rgba(146,115,202,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(146,115,202,0.20)'
+          },
+          cnj: {
+            job: 'Cnj',
+            bg: 'rgba(232,229,192,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(232,229,192,0.20)',
+            canHeal: true
+          },
+          alc: {
+            job: 'Alc',
+            bg: 'rgba(150,150,150,0.65)',
+            boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
+          },
+          arm: {
+            job: 'Arm',
+            bg: 'rgba(150,150,150,0.65)',
+            boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
+          },
+          bsm: {
+            job: 'Bsm',
+            bg: 'rgba(150,150,150,0.65)',
+            boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
+          },
+          crp: {
+            job: 'Crp',
+            bg: 'rgba(150,150,150,0.65)',
+            boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
+          },
+          cul: {
+            job: 'Cul',
+            bg: 'rgba(150,150,150,0.65)',
+            boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
+          },
+          gsm: {
+            job: 'Gsm',
+            bg: 'rgba(150,150,150,0.65)',
+            boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
+          },
+          ltw: {
+            job: 'Ltw',
+            bg: 'rgba(150,150,150,0.65)',
+            boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
+          },
+          wvr: {
+            job: 'Wvr',
+            bg: 'rgba(150,150,150,0.65)',
+            boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
+          },
+          bot: {
+            job: 'Bot',
+            bg: 'rgba(150,150,150,0.65)',
+            boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
+          },
+          fsh: {
+            job: 'Fsh',
+            bg: 'rgba(150,150,150,0.65)',
+            boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
+          },
+          min: {
+            job: 'Min',
+            bg: 'rgba(150,150,150,0.65)',
+            boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
+          },
+          cho: {
+            job: 'Cho',
+            bg: 'rgba(255,255,0,0.9)',
+            boxShadow: '0px 0px 6px 1px rgba(255,255,0,0.20)',
+            canHeal: true
+          },
+        }
+      };
+
+      function jobWrought(job) {
+
+        Object.keys(jobList.summons).forEach(function (summon) {
+          if (job.indexOf(jobList.summons[summon] == 0) || job.indexOf(jobList.summons[summon] != -1)) {
+            return 'PET'
+          }
+        });
+
+        if (job.indexOf(jobList.companion[Object.keys(jobList.companion)[0]]) != -1) {
+          return 'CHO'
+        }
+
+        return job
+      }
+
+      function JobOrName(combatant) {
+        return combatant.JobOrName = jobWrought(combatant.Job || combatant.name)
+      }
+
+      function applyStyle(job, overHeal) {
+        row.querySelector('.bar').style.backgroundColor = job.bg;
+        row.querySelector('.bar').style['-webkit-box-shadow'] = job.boxShadow;
+
+        if (overHeal) {
+          row.querySelector('.hps').innerHTML = 'OverH' + ' ' + overHeal;
+        }
+      }
+
+      function update(e) {
+        var encounter = e.detail.Encounter,
+          combatants = e.detail.Combatant,
+          template = document.querySelector('#source li'),
+          container = document.querySelector('#overlay').cloneNode(true),
+          rdps = parseFloat(encounter.encdps);
+
+        container.innerHTML = '';
+
+        // Copy text html data
+        // var copyToClipboard = function(str) {
+        //   var el = document.createElement('textarea');
+        //   el.value = str;
+        //   document.body.appendChild(el);
+        //   el.select();
+        //   document.execCommand('copy');
+        //   document.body.removeChild(el);
+        // };
+        // copyToClipboard( JSON.stringify(e.detail, null, '\t'));
+
+        // Data from overlay
+        // container.html('<pre>' +  JSON.stringify(e.detail, null, '\t') + '</pre>');
+        // $('#overlay').replaceWith(container);
+        // return;
+
+        if (!isNaN(rdps) && rdps != Infinity) {
+          rdps_max = Math.max(rdps_max, rdps);
+        }
+
+        var header = document.querySelector('#header li').cloneNode(true);
+        if (encounter.encdps.length <= 7) {
+          header.querySelector('.raiddps').innerHTML = encounter.encdps;
+        } else {
+          header.querySelector('.raiddps').innerHTML = encounter.ENCDPS;
+        }
+        header.querySelector('.encountertitle').innerHTML = encounter.title;
+        header.querySelector('.duration').innerHTML = encounter.duration;
+
+        // set inactive
+        if (!e.detail.isActive) {
+          rdps_max = 0;
+          document.body.classList.add('inactive');
+        } else {
+          document.body.classList.remove('inactive');
+        }
+
+        container.appendChild(header);
+
+        var limit = Math.max(combatants.length, rows),
+          names = Object.keys(combatants).slice(0, rows - 1),
+          maxdps = false;
+
+        for (var i = 0; i < names.length; i++) {
+          var combatant = combatants[names[i]];
+          row = template.cloneNode(true);
+
+          if (!maxdps) {
+            maxdps = parseFloat(combatant.encdps);
+          }
+
+          if (combatant.name == 'YOU') {
+            row.classList.add('you');
+          }
+
+          row.querySelector('.tohit').innerHTML = 'ACC' + ' ' + combatant.tohit + '%';
+          // encDPS html span required
+          // row.querySelector('.dps').innerHTML   = combatant.encdps;
+          row.querySelector('.job-icon').innerHTML = '<img src="images/default/' + JobOrName(combatant) + '.png" onerror="this.setAttribute(\'src\', \'images/error.png\');">';
+          row.querySelector('.name').innerHTML = combatant.name;
+          row.querySelector('.number').innerHTML = combatant['encdps'];
+          row.querySelector('.crithit').innerHTML = 'CRIT' + ' ' + combatant['crithit%'];
+          row.querySelector('.bar').style.width = ((parseFloat(combatant.encdps) / maxdps) * 100) + '%';
+
+          Object.keys(jobList.jobs).forEach(function (jobKey) {
+            if (JobOrName(combatant) == jobList.jobs[jobKey].job) {
+
+              if (jobList.jobs[jobKey].canHeal) {
+                applyStyle(jobList.jobs[jobKey], combatant.OverHealPct)
+              } else {
+                applyStyle(jobList.jobs[jobKey])
+              }
+
+            }
+          });
+          container.appendChild(row);
+        }
+        document.querySelector('#overlay').innerHTML = container.innerHTML;
+        // document.querySelector('#overlay').replaceWith(container);
+      }
+
+      document.addEventListener('onOverlayDataUpdate', function (e) {
+        update(e);
+      });
+      window.addEventListener('message', function (e) {
+        if (e.data.type === 'onOverlayDataUpdate') {
+          update(e.data);
+        }
+      });
+
+      // update( {detail: bacon} );
+    };
+  </script>
+</body>
+
+</html>
