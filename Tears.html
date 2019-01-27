@@ -62,6 +62,24 @@
         box-sizing: border-box;
       }
 
+      .job-icon{
+        top: 2px;
+        height: 20px;
+        z-index: 100;
+        margin-left: -4px;
+        position: relative;
+      }
+
+      .job-icon img{
+        width: 20px;
+        height: 20px;
+        z-index: 100;
+      }
+      
+      .inactive li .bar{
+        background-color: rgba(255,255,255,0.69);
+      }
+
       li.combatant{
         width: 100%;
         font-size: 12px;
@@ -135,8 +153,17 @@
         justify-content: space-between;
       }
 
+      li.raidheader > div{
+        display: flex;
+        flex-direction: column;
+      }
+
       li .encountertitle{
         font-size: 18px;
+        text-shadow: inset 0px 1px 1px #000;
+      }
+      li .current-zone{
+        font-size: 14px;
         text-shadow: inset 0px 1px 1px #000;
       }
 
@@ -215,44 +242,31 @@
         };
       }
 
-      .job-icon{
-        top: 2px;
-        height: 20px;
-        z-index: 100;
-        margin-left: -4px;
-        position: relative;
-      }
-
-      .job-icon img{
-        width: 20px;
-        height: 20px;
-        z-index: 100;
-      }
-
-      #title{
+      /* #title{
         z-index: 101;
         margin-left: 10px;
         position: absolute;
-      }
+      } */
 
-      .inactive li .bar{
-        background-color: rgba(255,255,255,0.69);
-      }
+
 
     </style>
 
 
   <ol id="header">
     <li class="raidheader">
-      <span class="encountertitle"></span>
+      <div>
+        <span class="encountertitle"></span>
+        <span class="current-zone"></span>
+      </div>
       <span class="raiddps"></span>
       <span class="duration"></span>
     </li>
   </ol>
   <div class="container">
-    <div class="title">
+    <!-- <div class="title">
       <span class="title"></span>
-    </div>
+    </div> -->
     <ol id="source">
       <li class="combatant">
 
@@ -284,7 +298,7 @@
     </ol>
     <ol id="overlay">
       <li>
-        <span class="title"></span>
+        <!-- <span class="title"></span> -->
         <center>
           Awaiting Parse Data.
         </center>
@@ -576,6 +590,7 @@
           header.querySelector('.raiddps').innerHTML = encounter.ENCDPS;
         }
         header.querySelector('.encountertitle').innerHTML = encounter.title;
+        header.querySelector('.current-zone').innerHTML = encounter.CurrentZoneName;
         header.querySelector('.duration').innerHTML = encounter.duration;
 
         // set inactive
