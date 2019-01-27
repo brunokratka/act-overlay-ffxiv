@@ -18,20 +18,19 @@
         box-sizing: border-box;
         background-repeat: no-repeat;
         background-position: bottom right;
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(0, 0, 0, 0.2);
       }
 
       #overlay{
         width: 100%;
         height: 100%;
-        margin-top: 35px;
+        /* margin-top: 35px; */
         color: #D3D4C2;
         position: inherit;
         border-radius: 0px;
       }
 
       #header{
-        top: 3px;
         width: 100%;
         height: 100%;
         display: none;
@@ -54,38 +53,105 @@
 
       ol{
         margin: 0;
-        padding: 5px;
+        padding: 0;
         list-style-type: none;
       }
 
-      li .encountertitle{
-        top: 8px;
-        left: 10px;
-        float: left;
-        font-size: 18px;
-        color: #D3D4C2;
+      li{
+        padding: 4px;
+        box-sizing: border-box;
+      }
+
+      li.combatant{
+        width: 100%;
+        font-size: 12px;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+      }
+
+      li .combatant-details{
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      li .combatant-properties{
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 2px;
+        position: relative;
+      }
+
+      li .combatant-attributes{
+        display: flex;
+        flex-wrap: nowrap;
+        margin-left: 8px;
+        font-size: 10px;
+      }
+
+      li .combatant-attributes > span{
+        margin-right: 16px;
+      }
+
+      li .combatant-attributes > span:nth-child(odd){
+        top: -4px;
         position: absolute;
+      }
+
+      li .combatant-attributes > span:nth-child(even){
+        margin-bottom: -4px;
+      }
+
+      li .crithit{
+        position: relative;
+      }
+
+      li .hps{
+        margin-left: 8px;
+      }
+
+      li .name{
+        font-size: 14px;
+        overflow: hidden;
+        white-space: nowrap;
+        letter-spacing: 1px;
+        display: inline-block;
+        text-overflow: ellipsis;
+      }
+
+      li.raidheader{
+        width: 100%;
+        display: flex;
+        font-size: 18px;
+        flex-wrap: nowrap;
+        margin-bottom: 16px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      li .encountertitle{
+        font-size: 18px;
         text-shadow: inset 0px 1px 1px #000;
       }
 
       li .raiddps{
-        left: 58%;
-        top: 12px;
         width: 70px;
-        color: #D3D4C2;
         display: block;
         font-size: 16px;
         text-align: middle;
-        position: absolute;
         letter-spacing: 7px;
-          vertical-align: middle; 
-          /* text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #D5AD6D, 0 0 30px #D5AD6D, 0 0 40px #D5AD6D, 0 0 50px #D5AD6D, 0 0 75px #D5AD6D;  */
-          text-shadow: inset 0px 1px 1px #000; 
+        text-shadow: inset 0px 1px 1px #000; 
       }
 
-      li{
-        padding: 0px;
-        margin: 10px;
+      li .duration{
+        font-size: 14px;
+        text-shadow: inset 0px 1px 1px #4d4d4d;
       }
 
       li .dps{
@@ -109,65 +175,6 @@
         background: -webkit-linear-gradient(transparent, transparent), -webkit-linear-gradient(top, rgba(213,173,109,1) 0%, rgba(213,173,109,1) 26%, rgba(226,186,120,1) 35%, rgba(163,126,67,1) 45%, rgba(145,112,59,1) 61%, rgba(213,173,109,1) 100%);
       }
 
-      li .name{
-        font-size: 14px;
-        overflow: hidden;
-        white-space: nowrap;
-        letter-spacing: 1px;
-        display: inline-block;
-        text-overflow: ellipsis;
-      }
-
-      li .duration{
-        top: 14px;
-        right: 10px;
-        float: right;
-        display: block;
-        font-size: 14px;
-        color: #D3D4C2;
-        position: absolute;
-          vertical-align: bottom; 
-        text-shadow: inset 0px 1px 1px #4d4d4d;
-      }
-
-      li .tohit{
-        margin-top: -4px;
-        /* z-index: 100; */
-        font-size: 10px;
-        position: absolute;
-      }
-
-      li .crithit{
-        font-size: 10px;
-        position: relative;
-      }
-
-      li .hps{
-        margin-left: 8px;
-        font-size: 10px;
-        position: relative;
-      }
-
-      li .besthit{
-        font-size: 10px;
-        position: relative;
-      }
-
-      li .detail{
-        width: 102.5%;
-        font-size: 12px;
-        color: #ded7be;
-        margin-left: -10px;
-        vertical-align: top;
-        display: inline-block;
-      }
-
-      li .detail .encdps{
-        float: right; 
-        color: #D3D4C2;
-        display: inline-block;
-      }
-
       li .bar{
         width: 100%;
         height: 1px;
@@ -179,6 +186,11 @@
         -webkit-animation: fullexpand ease-out;
         box-shadow: 0px 0px 6px 1px rgba(255,0,0,0.20);
         -webkit-box-shadow: 0px 0px 6px 1px rgba(255,0,0,0.20);
+      }
+
+      li .besthit{
+        font-size: 10px;
+        position: relative;
       }
 
       @-moz-keyframes fullexpand{
@@ -232,8 +244,8 @@
 
   <ol id="header">
     <li class="raidheader">
-      <span class="raiddps"></span>
       <span class="encountertitle"></span>
+      <span class="raiddps"></span>
       <span class="duration"></span>
     </li>
   </ol>
@@ -242,18 +254,32 @@
       <span class="title"></span>
     </div>
     <ol id="source">
-      <li>
-        <div class="detail">
-          <span class="job-icon"></span>
-          <span class="name"></span>
-          <span class="tohit"></span>
-          <span class="crithit"></span>
-          <span class="hps"></span>
-          <span class="encdps"></span>
-          <div id="progressBar">
-            <span class="bar"></span>
+      <li class="combatant">
+
+        <div class="combatant-details">
+
+          <div class="combatant-properties">
+            <span class="job-icon"></span>
+            <span class="name"></span>
+
+            <div class="combatant-attributes">
+              <span class="tohit"></span>
+              <span class="crithit"></span>
+              <span class="hps"></span>
+            </div>
           </div>
+          
+          <div class="combatant-dps">
+            <span class="encdps"></span>
+          </div>
+
         </div>
+
+        <div id="progressBar">
+          <span class="bar"></span>
+        </div>
+
+
       </li>
     </ol>
     <ol id="overlay">
