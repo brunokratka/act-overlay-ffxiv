@@ -44,12 +44,12 @@
         display: none;
       }
 
-      #content2{
+      #progressBar{
         width: 100%;
         height: 1px;
         margin: 0px auto;
         background: #000;
-          shadow: 0px 1px 0px rgb(255,255,255); 
+        shadow: 0px 1px 0px rgb(255,255,255); 
       }
 
       ol{
@@ -131,7 +131,8 @@
       }
 
       li .tohit{
-        z-index: 100;
+        margin-top: -4px;
+        /* z-index: 100; */
         font-size: 10px;
         position: absolute;
       }
@@ -142,6 +143,7 @@
       }
 
       li .hps{
+        margin-left: 8px;
         font-size: 10px;
         position: relative;
       }
@@ -160,8 +162,8 @@
         display: inline-block;
       }
 
-      li .detail .number{
-          float: right; 
+      li .detail .encdps{
+        float: right; 
         color: #D3D4C2;
         display: inline-block;
       }
@@ -247,8 +249,8 @@
           <span class="tohit"></span>
           <span class="crithit"></span>
           <span class="hps"></span>
-          <span class="number"></span>
-          <div id="content2">
+          <span class="encdps"></span>
+          <div id="progressBar">
             <span class="bar"></span>
           </div>
         </div>
@@ -271,6 +273,7 @@
       var rows    = 10,
         row,
         rdps_max  = 0,
+        combatantName = 'Your Tears',
         imgFolder = 'default';
 
       String.prototype.capitalize = function () {
@@ -480,24 +483,26 @@
 
       function jobWrought(job) {
 
-        Object.keys(jobList.summons).forEach(function (summon) {
-          if (job.indexOf(jobList.summons[summon] == 0) || job.indexOf(jobList.summons[summon] != -1)) {
-            return 'PET'
+        if(job){
+
+          Object.keys(jobList.summons).forEach(function (summon) {
+            if(job.indexOf(jobList.summons[summon] == 0) || job.indexOf(jobList.summons[summon] != -1)) {
+              return 'PET'
+            }
+          });
+
+          if(job.indexOf(jobList.companion[Object.keys(jobList.companion)[0]]) != -1){
+            return 'CHO'
+          }else{
+            return job
           }
-        });
-
-        if (job.indexOf(jobList.companion[Object.keys(jobList.companion)[0]]) != -1) {
-          return 'CHO'
+        }else{
+          return 'blu'
         }
-
-        // Blue mage functions independently of other classes and jobs
-        // There isn't a job description for blue mage
-        // Palliative
-        return job ? job : 'blu'
       }
 
       function jobName(combatant) {
-        return combatant.JobOrName = jobWrought(combatant.Job)
+        return combatant.JobOrName = jobWrought(combatant.Job || combatant.name)
       }
 
       function applyStyle(job, overHeal) {
@@ -573,13 +578,14 @@
             row.classList.add('you');
           }
 
-          row.querySelector('.tohit').innerHTML = 'ACC' + ' ' + combatant.tohit + '%';
+          row.querySelector('.tohit').innerHTML = 'ACC' + ' ' + combatant.tohit + '%'; // Accuracy
           // encDPS html span required
           // row.querySelector('.dps').innerHTML   = combatant.encdps;
           row.querySelector('.job-icon').innerHTML = '<img src="images/'+ imgFolder + '/' + jobName(combatant) + '.png" onerror="this.setAttribute(\'src\', \'images/error.png\');">';
-          row.querySelector('.name').innerHTML = combatant.name;
-          row.querySelector('.number').innerHTML = combatant['encdps'];
-          row.querySelector('.crithit').innerHTML = 'CRIT' + ' ' + combatant['crithit%'];
+          row.querySelector('.name').innerHTML = combatant.name === 'YOU' ? combatantName : combatant.name;
+          row.querySelector('.encdps').innerHTML = combatant['encdps']; // Encdps
+          row.querySelector('.crithit').innerHTML = 'CRIT' + ' ' + combatant['crithit%']; // Crithit
+          
           row.querySelector('.bar').style.width = ((parseFloat(combatant.encdps) / maxdps) * 100) + '%';
 
           Object.keys(jobList.jobs).forEach(function (jobKey) {
