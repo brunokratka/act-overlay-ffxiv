@@ -3,9 +3,6 @@
 
 <head>
   <meta charset="utf-8" />
-
-  <!-- <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script> -->
-
 </head>
 
 <body>
@@ -250,8 +247,7 @@
 
 
 
-    </style>
-
+  </style>
 
   <ol id="header">
     <li class="raidheader">
@@ -292,8 +288,6 @@
         <div id="progressBar">
           <span class="bar"></span>
         </div>
-
-
       </li>
     </ol>
     <ol id="overlay">
@@ -311,7 +305,6 @@
       'use strict';
 
       var rows    = 10,
-        row,
         rdps_max  = 0,
         combatantName = 'Your Tears',
         imgFolder = 'default';
@@ -346,9 +339,19 @@
             bg: 'rgba(150, 80, 30,1.00)',
             boxShadow: '0px 0px 6px 1px rgba(179,0,0,0.70)'
           },
+          gnb: {
+            job: 'Gnb',
+            bg: 'rgb(255, 193, 7);',
+            boxShadow: '0px 0px 6px 1px rgba(179,0,0,0.70)'
+          },
           brd: {
             job: 'Brd',
             bg: 'rgba(216,232,85,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(216,232,85,0.20)'
+          },
+          dnc: {
+            job: 'Dnc',
+            bg: 'rgb(207, 20, 51);',
             boxShadow: '0px 0px 6px 1px rgba(216,232,85,0.20)'
           },
           mch: {
@@ -521,12 +524,10 @@
         }
       };
 
-      function jobWrought(job) {
-
+      function jobWrought(job){
         if(job){
-
-          Object.keys(jobList.summons).forEach(function (summon) {
-            if(job.indexOf(jobList.summons[summon] == 0) || job.indexOf(jobList.summons[summon] != -1)) {
+          Object.keys(jobList.summons).forEach(function(summon){
+            if(job.indexOf(jobList.summons[summon] == 0) || job.indexOf(jobList.summons[summon] != -1)){
               return 'PET'
             }
           });
@@ -541,25 +542,25 @@
         }
       }
 
-      function jobName(combatant) {
+      function jobName(combatant){
         return combatant.JobOrName = jobWrought(combatant.Job || combatant.name)
       }
 
-      function applyStyle(job, overHeal) {
+      function applyStyle(job, overHeal){
         row.querySelector('.bar').style.backgroundColor = job.bg;
         row.querySelector('.bar').style['-webkit-box-shadow'] = job.boxShadow;
 
-        if (overHeal) {
-          row.querySelector('.hps').innerHTML = 'OverH' + ' ' + overHeal;
+        if(overHeal){
+          row.querySelector('.hps').innerHTML = 'OverH ' + overHeal;
         }
       }
 
-      function update(e) {
+      function update(e){
         var encounter = e.detail.Encounter,
-          combatants = e.detail.Combatant,
-          template = document.querySelector('#source li'),
-          container = document.querySelector('#overlay').cloneNode(true),
-          rdps = parseFloat(encounter.encdps);
+          combatants  = e.detail.Combatant,
+          template    = document.querySelector('#source li'),
+          container   = document.querySelector('#overlay').cloneNode(true),
+          rdps        = parseFloat(encounter.encdps);
 
         container.innerHTML = '';
 
@@ -579,14 +580,14 @@
         // $('#overlay').replaceWith(container);
         // return;
 
-        if (!isNaN(rdps) && rdps != Infinity) {
+        if(!isNaN(rdps) && rdps != Infinity){
           rdps_max = Math.max(rdps_max, rdps);
         }
 
         var header = document.querySelector('#header li').cloneNode(true);
-        if (encounter.encdps.length <= 7) {
+        if(encounter.encdps.length <= 7){
           header.querySelector('.raiddps').innerHTML = encounter.encdps;
-        } else {
+        }else{
           header.querySelector('.raiddps').innerHTML = encounter.ENCDPS;
         }
         header.querySelector('.encountertitle').innerHTML = encounter.title;
@@ -594,7 +595,7 @@
         header.querySelector('.duration').innerHTML = encounter.duration;
 
         // set inactive
-        if (!e.detail.isActive) {
+        if(!e.detail.isActive){
           rdps_max = 0;
           document.body.classList.add('inactive');
         } else {
@@ -607,37 +608,34 @@
           names = Object.keys(combatants).slice(0, rows - 1),
           maxdps = false;
 
-        for (var i = 0; i < names.length; i++) {
+        for(var i = 0; i < names.length; i++){
           var combatant = combatants[names[i]];
           row = template.cloneNode(true);
 
-          if (!maxdps) {
+          if(!maxdps){
             maxdps = parseFloat(combatant.encdps);
           }
 
-          if (combatant.name == 'YOU') {
+          if(combatant.name == 'YOU'){
             row.classList.add('you');
           }
 
-          row.querySelector('.tohit').innerHTML = 'ACC' + ' ' + combatant.tohit + '%'; // Accuracy
+          row.querySelector('.tohit').innerHTML = 'ACC ' + combatant.tohit + '%'; // Accuracy
           // encDPS html span required
           // row.querySelector('.dps').innerHTML   = combatant.encdps;
           row.querySelector('.job-icon').innerHTML = '<img src="images/'+ imgFolder + '/' + jobName(combatant) + '.png" onerror="this.setAttribute(\'src\', \'images/error.png\');">';
           row.querySelector('.name').innerHTML = combatant.name === 'YOU' ? combatantName : combatant.name;
           row.querySelector('.encdps').innerHTML = combatant['encdps']; // Encdps
-          row.querySelector('.crithit').innerHTML = 'CRIT' + ' ' + combatant['crithit%']; // Crithit
-          
+          row.querySelector('.crithit').innerHTML = 'CRIT ' + combatant['crithit%']; // Crithit
           row.querySelector('.bar').style.width = ((parseFloat(combatant.encdps) / maxdps) * 100) + '%';
 
-          Object.keys(jobList.jobs).forEach(function (jobKey) {
-            if (jobName(combatant) == jobList.jobs[jobKey].job) {
-
-              if (jobList.jobs[jobKey].canHeal) {
+          Object.keys(jobList.jobs).forEach(function (jobKey){
+            if(jobName(combatant) == jobList.jobs[jobKey].job){
+              if(jobList.jobs[jobKey].canHeal){
                 applyStyle(jobList.jobs[jobKey], combatant.OverHealPct)
-              } else {
+              }else{
                 applyStyle(jobList.jobs[jobKey])
               }
-
             }
           });
           container.appendChild(row);
@@ -646,11 +644,10 @@
         // document.querySelector('#overlay').replaceWith(container);
       }
 
-      document.addEventListener('onOverlayDataUpdate', function (e) {
-        update(e);
-      });
-      window.addEventListener('message', function (e) {
-        if (e.data.type === 'onOverlayDataUpdate') {
+      document.addEventListener('onOverlayDataUpdate', function(e){ update(e); });
+
+      window.addEventListener('message', function(e){
+        if(e.data.type === 'onOverlayDataUpdate'){
           update(e.data);
         }
       });
