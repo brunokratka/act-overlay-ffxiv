@@ -6,7 +6,7 @@ Parse corresponding from patch 4.5
 
 ### Overlay
 
-Overlay version: 0.3.3.8-x64-full
+Get Latest [here](https://github.com/hibiyasleep/OverlayPlugin/releases/tag/0.3.4.0)
 
 ### What's new
 
