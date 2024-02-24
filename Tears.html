@@ -3,260 +3,255 @@
 
 <head>
   <meta charset="utf-8" />
+
+  <!-- <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script> -->
+
 </head>
 
 <body>
   <style>
-    html {
-      height: 100%;
-      overflow: hidden;
-      border-radius: 10px;
-      font-family: Meiryo;
-      box-sizing: border-box;
-      background-repeat: no-repeat;
-      background-position: bottom right;
-      background-color: rgba(0, 0, 0, 0.2);
-    }
-
-    #overlay {
-      width: 100%;
-      height: 100%;
-      /* margin-top: 35px; */
-      color: #D3D4C2;
-      position: inherit;
-      border-radius: 0px;
-    }
-
-    #header {
-      width: 100%;
-      height: 100%;
-      display: none;
-      font-size: 14px;
-      position: relative;
-      vertical-align: middle;
-    }
-
-    #source {
-      display: none;
-    }
-
-    #progressBar {
-      width: 100%;
-      height: 1px;
-      margin: 0px auto;
-      background: #000;
-    }
-
-    ol {
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
-    }
-
-    li {
-      padding: 4px;
-      box-sizing: border-box;
-    }
-
-    .job-icon {
-      top: 2px;
-      height: 20px;
-      z-index: 100;
-      margin-left: -4px;
-      margin-right: 8px;
-      position: relative;
-    }
-
-    .job-icon img {
-      width: 20px;
-      height: 20px;
-      z-index: 100;
-    }
-
-    li.combatant {
-      width: 100%;
-      font-size: 12px;
-      display: flex;
-      flex-wrap: nowrap;
-      flex-direction: column;
-    }
-
-    li .center {
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-    }
-
-    li .combatant-details {
-      width: 100%;
-      display: flex;
-      flex-wrap: nowrap;
-      flex-direction: row;
-      justify-content: space-between;
-    }
-
-    li .combatant-properties {
-      display: flex;
-      flex-wrap: nowrap;
-      flex-direction: row;
-      align-items: center;
-      margin-bottom: 2px;
-      position: relative;
-    }
-
-    li .combatant-encounter-data {
-      display: flex;
-      flex-wrap: nowrap;
-    }
-
-    li .combatant-attributes {
-      display: flex;
-      flex-wrap: nowrap;
-      font-size: 10px;
-    }
-
-    li .combatant-attributes>span {
-      display: flex;
-      flex-wrap: nowrap;
-      flex-direction: row;
-    }
-
-    /* li .combatant-attributes>span:nth-child(odd) {
-      top: -4px;
-      position: absolute;
-    } */
-
-    /* li .combatant-attributes>span:nth-child(even) {
-      margin-bottom: -4px;
-    } */
-
-    li .tohit,
-    li .crithit {
-      position: relative;
-      margin-right: 8px;
-    }
-
-    li .name {
-      font-size: 14px;
-      overflow: hidden;
-      white-space: nowrap;
-      letter-spacing: 1px;
-      display: inline-block;
-      text-overflow: ellipsis;
-    }
-
-    li .combatant-dps {
-      display: flex;
-      flex-wrap: nowrap;
-    }
-
-    li .combatant-dps .encdps {
-      min-width: 100px;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    li.raidheader {
-      width: 100%;
-      display: flex;
-      font-size: 18px;
-      flex-wrap: nowrap;
-      margin-bottom: 16px;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    li.raidheader>div {
-      display: flex;
-      flex-direction: column;
-    }
-
-    li .encountertitle {
-      font-size: 18px;
-      text-shadow: inset 0px 1px 1px #000;
-    }
-
-    li .current-zone {
-      font-size: 14px;
-      text-shadow: inset 0px 1px 1px #000;
-    }
-
-    li .raiddps {
-      width: 70px;
-      display: block;
-      font-size: 16px;
-      text-align: middle;
-      letter-spacing: 7px;
-      text-shadow: inset 0px 1px 1px #000;
-    }
-
-    li .duration {
-      font-size: 14px;
-      text-shadow: inset 0px 1px 1px #4d4d4d;
-    }
-
-    li .dps {
-      width: 48%;
-      z-index: 100;
-      max-width: 70px;
-      font-size: 16px;
-      text-align: left;
-      margin-left: 0px;
-      margin-right: 1%;
-      color: #D5AD6D;
-      position: relative;
-      display: inline-block;
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 10px 10px 31px -14px rgba(0, 0, 0, 0.75);
-      -moz-text-shadow: 10px 10px 31px -14px rgba(0, 0, 0, 0.75);
-      -webkit-text-shadow: 10px 10px 31px -14px rgba(0, 0, 0, 0.75);
-      background: -o-linear-gradient(transparent, transparent);
-      background: -webkit-linear-gradient(transparent, transparent), -webkit-linear-gradient(top, rgba(213, 173, 109, 1) 0%, rgba(213, 173, 109, 1) 26%, rgba(226, 186, 120, 1) 35%, rgba(163, 126, 67, 1) 45%, rgba(145, 112, 59, 1) 61%, rgba(213, 173, 109, 1) 100%);
-    }
-
-    li .bar {
-      width: 100%;
-      height: 1px;
-      margin: 0px;
-      display: block;
-      position: inherit;
-      animation: fullexpand ease-out;
-      -moz-animation: fullexpand ease-out;
-      -webkit-animation: fullexpand ease-out;
-      box-shadow: 0px 0px 6px 1px rgba(255, 0, 0, 0.20);
-      -webkit-box-shadow: 0px 0px 6px 1px rgba(255, 0, 0, 0.20);
-    }
-
-    li .besthit {
-      font-size: 10px;
-      position: relative;
-    }
-
-    @-moz-keyframes fullexpand {
-      0% {
-        width: 0px;
+    html{
+        height: 100%;
+        overflow: hidden;
+        border-radius: 10px;
+        font-family: Meiryo;
+        box-sizing: border-box;
+        background-repeat: no-repeat;
+        background-position: bottom right;
+        background-color: rgba(0, 0, 0, 0.2);
       }
 
-      100% {
+      #overlay{
         width: 100%;
+        height: 100%;
+        /* margin-top: 35px; */
+        color: #D3D4C2;
+        position: inherit;
+        border-radius: 0px;
       }
-    }
 
-    @-webkit-keyframes fullexpand {
-      0% {
-        width: 0px;
-      }
-
-      100% {
+      #header{
         width: 100%;
+        height: 100%;
+        display: none;
+        font-size: 14px;
+        position: relative;
+        vertical-align: middle;
       }
 
-      ;
-    }
-  </style>
+      #source{
+        display: none;
+      }
+
+      #progressBar{
+        width: 100%;
+        height: 1px;
+        margin: 0px auto;
+        background: #000;
+        shadow: 0px 1px 0px rgb(255,255,255); 
+      }
+
+      ol{
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+      }
+
+      li{
+        padding: 4px;
+        box-sizing: border-box;
+      }
+
+      .job-icon{
+        top: 2px;
+        height: 20px;
+        z-index: 100;
+        margin-left: -4px;
+        position: relative;
+      }
+
+      .job-icon img{
+        width: 20px;
+        height: 20px;
+        z-index: 100;
+      }
+      
+      .inactive li .bar{
+        background-color: rgba(255,255,255,0.69);
+      }
+
+      li.combatant{
+        width: 100%;
+        font-size: 12px;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+      }
+
+      li .combatant-details{
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      li .combatant-properties{
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 2px;
+        position: relative;
+      }
+
+      li .combatant-attributes{
+        display: flex;
+        flex-wrap: nowrap;
+        margin-left: 8px;
+        font-size: 10px;
+      }
+
+      li .combatant-attributes > span{
+        margin-right: 16px;
+      }
+
+      li .combatant-attributes > span:nth-child(odd){
+        top: -4px;
+        position: absolute;
+      }
+
+      li .combatant-attributes > span:nth-child(even){
+        margin-bottom: -4px;
+      }
+
+      li .crithit{
+        position: relative;
+      }
+
+      li .hps{
+        margin-left: 8px;
+      }
+
+      li .name{
+        font-size: 14px;
+        overflow: hidden;
+        white-space: nowrap;
+        letter-spacing: 1px;
+        display: inline-block;
+        text-overflow: ellipsis;
+      }
+
+      li.raidheader{
+        width: 100%;
+        display: flex;
+        font-size: 18px;
+        flex-wrap: nowrap;
+        margin-bottom: 16px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      li.raidheader > div{
+        display: flex;
+        flex-direction: column;
+      }
+
+      li .encountertitle{
+        font-size: 18px;
+        text-shadow: inset 0px 1px 1px #000;
+      }
+      li .current-zone{
+        font-size: 14px;
+        text-shadow: inset 0px 1px 1px #000;
+      }
+
+      li .raiddps{
+        width: 70px;
+        display: block;
+        font-size: 16px;
+        text-align: middle;
+        letter-spacing: 7px;
+        text-shadow: inset 0px 1px 1px #000; 
+      }
+
+      li .duration{
+        font-size: 14px;
+        text-shadow: inset 0px 1px 1px #4d4d4d;
+      }
+
+      li .dps{
+        width: 48%;
+        z-index: 100;
+        max-width: 70px;
+        font-size: 16px;
+        text-align: left;
+        margin-left: 0px;
+        margin-right: 1%;
+        color: #D5AD6D;
+        position: relative;
+        display: inline-block;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 10px 10px 31px -14px rgba(0,0,0,0.75);
+        -moz-text-shadow: 10px 10px 31px -14px rgba(0,0,0,0.75);
+        -webkit-text-shadow: 10px 10px 31px -14px rgba(0,0,0,0.75);
+        background: -o-linear-gradient(transparent, transparent);
+        background: -webkit-linear-gradient(transparent, transparent), -webkit-linear-gradient(top, rgba(213,173,109,1) 0%, rgba(213,173,109,1) 26%, rgba(226,186,120,1) 35%, rgba(163,126,67,1) 45%, rgba(145,112,59,1) 61%, rgba(213,173,109,1) 100%);
+      }
+
+      li .bar{
+        width: 100%;
+        height: 1px;
+        margin: 0px;
+        display: block;
+        position: inherit;
+        animation: fullexpand ease-out;
+        -moz-animation: fullexpand ease-out;
+        -webkit-animation: fullexpand ease-out;
+        box-shadow: 0px 0px 6px 1px rgba(255,0,0,0.20);
+        -webkit-box-shadow: 0px 0px 6px 1px rgba(255,0,0,0.20);
+      }
+
+      li .besthit{
+        font-size: 10px;
+        position: relative;
+      }
+
+      @-moz-keyframes fullexpand{
+        0%
+        {
+          width: 0px;
+        }
+        100%
+        {
+          width: 100%;
+        }
+      }
+
+      @-webkit-keyframes fullexpand{
+        0%
+        {
+          width: 0px;
+        }
+        100%
+        {
+          width: 100%;
+        };
+      }
+
+      /* #title{
+        z-index: 101;
+        margin-left: 10px;
+        position: absolute;
+      } */
+
+
+
+    </style>
+
 
   <ol id="header">
     <li class="raidheader">
@@ -273,34 +268,36 @@
       <li class="combatant">
 
         <div class="combatant-details">
+
           <div class="combatant-properties">
             <span class="job-icon"></span>
             <span class="name"></span>
-          </div>
 
-          <div class="combatant-encounter-data">
             <div class="combatant-attributes">
               <span class="tohit"></span>
               <span class="crithit"></span>
               <span class="hps"></span>
             </div>
-
-            <div class="combatant-dps">
-              <span class="encdps"></span>
-            </div>
           </div>
+          
+          <div class="combatant-dps">
+            <span class="encdps"></span>
+          </div>
+
         </div>
 
         <div id="progressBar">
           <span class="bar"></span>
         </div>
+
+
       </li>
     </ol>
     <ol id="overlay">
       <li>
-        <div class="center">
+        <center>
           Awaiting Parse Data.
-        </div>
+        </center>
       </li>
     </ol>
   </div>
@@ -309,9 +306,9 @@
     window.onload = function () {
       'use strict';
 
-      var rows = 10,
+      var rows    = 10,
         row,
-        rdps_max = 0,
+        rdps_max  = 0,
         combatantName = 'Your Tears',
         imgFolder = 'default';
 
@@ -321,159 +318,190 @@
 
       var jobList = {
         summons: {
-          ifritEgi: 'Ifrit-Egi',
-          eos: 'Eos',
-          selene: 'Selene',
-          carbuncle: 'Carbuncle'
+          egi: '-Egi (',
+          eos: 'Eos (',
+          selene: 'Selene (',
+          carbuncle: 'Carbuncle ('
         },
         companion: {
           chocobo: ' ('
         },
         jobs: {
-          pld: {
-            job: 'Pld',
-            bg: 'rgba(197,232,232,1)',
-            boxShadow: '0px 0px 6px 1px rgba(100,111,112,1)',
-            canHeal: true
-          },
+          // TANK
           war: {
             job: 'War',
-            bg: 'rgba(204,67,63,1)',
-            boxShadow: '0px 0px 6px 1px rgba(157,52,52,1)',
-            canHeal: true
+            bg: 'rgba(200,0,0,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(200,0,0,0.40)'
+          },
+          pld: {
+            job: 'Pld',
+            bg: 'rgba(94,247,235,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(94,247,235,0.20)'
           },
           drk: {
             job: 'Drk',
-            bg: 'rgba(208,115,47,1)',
-            boxShadow: '0px 0px 6px 1px rgba(85,72,68,1)',
-            canHeal: true
+            bg: 'rgba(150, 80, 30,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(179,0,0,0.70)'
           },
           gnb: {
             job: 'Gnb',
-            bg: 'rgba(186,158,55,1)',
-            boxShadow: '0px 0px 6px 1px rgba(96,93,71,1)',
-            canHeal: true
+            bg: 'rgba(172, 148, 54,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(251, 248, 101,0.70)'
           },
+
+
+          // HEALER
           whm: {
             job: 'Whm',
-            bg: 'rgba(252,248,218,1)',
-            boxShadow: '0px 0px 6px 1px rgba(191,183,147,1)',
+            bg: 'rgba(232,229,192,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(232,229,192,0.20)',
             canHeal: true
           },
           sch: {
             job: 'Sch',
-            bg: 'rgba(93,89,210,1)',
-            boxShadow: '0px 0px 6px 1px rgba(76,72,105,1)',
+            bg: 'rgba(79,114,255,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(79,114,255,0.20)',
             canHeal: true
           },
           ast: {
             job: 'Ast',
-            bg: 'rgba(226,176,84,0.6)',
-            boxShadow: '0px 0px 6px 1px rgba(103,83,63,0.6)',
+            bg: 'rgba(218, 149, 94,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(218, 149, 94,0.20)',
             canHeal: true
           },
+          sge: {
+            job: 'Sge',
+            bg: 'rgba(228, 238, 240,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(168, 248, 253,0.20)',
+            canHeal: true
+          },
+
+
+          // MELEE DPS
           mnk: {
             job: 'Mnk',
-            bg: 'rgba(240,225,59,1)',
-            boxShadow: '0px 0px 6px 1px rgba(196,151,24,1)',
-            canHeal: true
+            bg: 'rgba(245,238,80,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(245,238,80,0.20)'
           },
           drg: {
             job: 'Drg',
-            bg: 'rgba(73,96,211,1)',
-            boxShadow: '0px 0px 6px 1px rgba(77,80,99,1)',
-            canHeal: true
+            bg: 'rgba(98,151,241,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(98,151,241,0.20)'
           },
           nin: {
             job: 'Nin',
-            bg: 'rgba(148,144,156,1)',
-            boxShadow: '0px 0px 6px 1px rgba(209,55,90,1)',
-            canHeal: true
+            bg: 'rgba(138,0,0,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(138,0,0,0.20)'
           },
           sam: {
             job: 'Sam',
-            bg: 'rgba(218,119,30,1)',
-            boxShadow: '0px 0px 6px 1px rgba(172,164,124,1)',
-            canHeal: true
+            bg: 'rgba(168,219,94,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(200,0,0,0.40)'
           },
+          rpr: {
+            job: 'Rpr',
+            bg: 'rgba(71, 76, 82,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(254, 250, 132,0.40)'
+          },
+
+
+          // PHYSICAL RANGED DPS
           brd: {
             job: 'Brd',
-            bg: 'rgba(198,215,86,1)',
-            boxShadow: '0px 0px 6px 1px rgba(97,109,67,1)',
-            canHeal: true
+            bg: 'rgba(216,232,85,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(216,232,85,0.20)'
           },
           mch: {
             job: 'Mch',
-            bg: 'rgba(187,246,241,1)',
-            boxShadow: '0px 0px 6px 1px rgba(89,183,182,1)',
-            canHeal: true
+            bg: 'rgba(89, 168, 240,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(89, 168, 240,0.20)'
           },
           dnc: {
             job: 'Dnc',
-            bg: 'rgba(215,175,154,1)',
-            boxShadow: '0px 0px 6px 1px rgb(239,218,206,1)',
-            canHeal: true
+            bg: 'rgba(248, 213, 185,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(255, 255, 255,0.20)'
           },
+
+
+          //MAGICAL RANGED DPS
           blm: {
             job: 'Blm',
-            bg: 'rgba(141,103,188,1)',
-            boxShadow: '0px 0px 6px 1px rgba(75,71,81,1)',
-            canHeal: true
+            bg: 'rgba(146,115,202,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(146,115,202,0.20)'
           },
           smn: {
             job: 'Smn',
-            bg: 'rgba(151,207,74,1)',
-            boxShadow: '0px 0px 6px 1px rgba(76,102,56,1)',
+            bg: 'rgba(168,219,94,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(168,219,94,0.20)',
             canHeal: true
           },
           rdm: {
             job: 'Rdm',
-            bg: 'rgba(168,156,240,1)',
-            boxShadow: '0px 0px 6px 1px rgba(215,107,151,1)',
-            canHeal: true
+            bg: 'rgba(200,0,0,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(168,219,94,0.20)'
           },
+          blu: {
+            job: 'Blu',
+            bg: 'rgba(56, 83, 129,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(238, 255, 255,0.20)'
+          },
+
+
+
+          // DISCIPLE OF WAR
           gla: {
             job: 'Gla',
-            bg: 'rgba(197,232,232,1)',
-            boxShadow: '0px 0px 6px 1px rgba(100,111,112,1)'
+            bg: 'rgba(94,247,235,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(94,247,235,0.20)'
           },
           mrd: {
             job: 'Mrd',
-            bg: 'rgba(204,67,63,1)',
-            boxShadow: '0px 0px 6px 1px rgba(157,52,52,1)'
-          },
-          cnj: {
-            job: 'Cnj',
-            bg: 'rgba(252,248,218,1)',
-            boxShadow: '0px 0px 6px 1px rgba(191,183,147,1)',
-            canHeal: true
+            bg: 'rgba(200,0,0,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(200,0,0,0.20)'
           },
           pgl: {
             job: 'Pgl',
-            bg: 'rgba(240,225,59,1)',
-            boxShadow: '0px 0px 6px 1px rgba(196,151,24,1)'
+            bg: 'rgba(245,238,80,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(245,238,80,0.20)'
           },
           lnc: {
             job: 'Lnc',
-            bg: 'rgba(73,96,211,1)',
-            boxShadow: '0px 0px 6px 1px rgba(77,80,99,1)'
+            bg: 'rgba(98,151,241,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(98,151,241,0.20)'
           },
           rog: {
             job: 'Rog',
-            bg: 'rgba(148,144,156,1)',
-            boxShadow: '0px 0px 6px 1px rgba(209,55,90,1)'
+            bg: 'rgba(138,0,0,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(138,0,0,0.20)'
           },
-          thm: {
-            job: 'Thm',
-            bg: 'rgba(141,103,188,1)',
-            boxShadow: '0px 0px 6px 1px rgba(75,71,81,1)'
+
+
+          // DISCIPLE OF MAGIC
+          arc: {
+            job: 'Arc',
+            bg: 'rgba(216,232,85,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(216,232,85,0.20)'
           },
           acn: {
             job: 'Acn',
-            bg: 'rgba(151,207,74,1)',
-            boxShadow: '0px 0px 6px 1px rgba(76,102,56,1)',
+            bg: 'rgba(168,219,94,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(168,219,94,0.20)',
             canHeal: true
           },
+          thm: {
+            job: 'Thm',
+            bg: 'rgba(146,115,202,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(146,115,202,0.20)'
+          },
+          cnj: {
+            job: 'Cnj',
+            bg: 'rgba(232,229,192,1.00)',
+            boxShadow: '0px 0px 6px 1px rgba(232,229,192,0.20)',
+            canHeal: true
+          },
+
+
+          // CRAFTERS
           alc: {
             job: 'Alc',
             bg: 'rgba(150,150,150,0.65)',
@@ -514,6 +542,9 @@
             bg: 'rgba(150,150,150,0.65)',
             boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
           },
+
+
+          // GATHERERS
           bot: {
             job: 'Bot',
             bg: 'rgba(150,150,150,0.65)',
@@ -529,37 +560,40 @@
             bg: 'rgba(150,150,150,0.65)',
             boxShadow: '0px 0px 6px 1px rgba(150,150,150,0.20)'
           },
+
+
+          // CHOCOBO
           cho: {
             job: 'Cho',
             bg: 'rgba(255,255,0,0.9)',
             boxShadow: '0px 0px 6px 1px rgba(255,255,0,0.20)',
             canHeal: true
           },
-          blu: {
-            job: 'Blu',
-            bg: 'rgba(119,190,223,1)',
-            boxShadow: '0px 0px 6px 1px rgba(64,128,193,1)',
-            canHeal: true
-          },
         }
       };
 
-      function jobWrought(job, name) {
-        if (job) {
-          return job;
-        } else {
-          for (const summon in jobList.summons) {
-            if (name.indexOf(jobList.summons[summon]) != -1) {
-              return 'Pet';
-            }
-          }
+      function jobWrought(job) {
 
-          return 'Cho'
+        if(job){
+
+          Object.keys(jobList.summons).forEach(function (summon) {
+            if(job.indexOf(jobList.summons[summon] == 0) || job.indexOf(jobList.summons[summon] != -1)) {
+              return 'PET'
+            }
+          });
+
+          if(job.indexOf(jobList.companion[Object.keys(jobList.companion)[0]]) != -1){
+            return 'CHO'
+          }else{
+            return job
+          }
+        }else{
+          return 'blu'
         }
       }
 
       function jobName(combatant) {
-        return jobWrought(combatant.Job, combatant.name);
+        return combatant.JobOrName = jobWrought(combatant.Job || combatant.name)
       }
 
       function applyStyle(job, overHeal) {
@@ -567,28 +601,21 @@
         row.querySelector('.bar').style['-webkit-box-shadow'] = job.boxShadow;
 
         if (overHeal) {
-          row.querySelector('.hps').innerHTML = 'OverH ' + overHeal;
+          row.querySelector('.hps').innerHTML = 'OverH' + ' ' + overHeal;
         }
-      }
-
-      function encdpsValue(currentData) {
-        if (!isNaN(currentData) || currentData != Infinity || currentData !== 'NaN' || currentData !== '∞') {
-          return currentData;
-        }
-
-        return '0';
       }
 
       function update(e) {
         var encounter = e.detail.Encounter,
           combatants = e.detail.Combatant,
           template = document.querySelector('#source li'),
-          container = document.querySelector('#overlay').cloneNode(true);
+          container = document.querySelector('#overlay').cloneNode(true),
+          rdps = parseFloat(encounter.encdps);
 
         container.innerHTML = '';
 
-        // // Copy text html data
-        // var copyToClipboard = function (str) {
+        // Copy text html data
+        // var copyToClipboard = function(str) {
         //   var el = document.createElement('textarea');
         //   el.value = str;
         //   document.body.appendChild(el);
@@ -596,28 +623,40 @@
         //   document.execCommand('copy');
         //   document.body.removeChild(el);
         // };
+        // copyToClipboard( JSON.stringify(e.detail, null, '\t'));
+        // End text html data
 
-        // var stringifyValue = JSON.stringify(e.detail, null, '\t');
-
-        // copyToClipboard(stringifyValue);
-
-        // // Data from overlay
-        // container.html('<pre>' + stringifyValue + '</pre>');
+        // // Copy data from overlay
+        // container.html('<pre>' +  JSON.stringify(e.detail, null, '\t') + '</pre>');
         // $('#overlay').replaceWith(container);
         // return;
-        // // End copy text html data
 
-        // HEADER CONTENT
+        if (!isNaN(rdps) && rdps != Infinity) {
+          rdps_max = Math.max(rdps_max, rdps);
+        }
+
         var header = document.querySelector('#header li').cloneNode(true);
+        if (encounter.encdps.length <= 7) {
+          header.querySelector('.raiddps').innerHTML = encounter.encdps;
+        } else {
+          header.querySelector('.raiddps').innerHTML = encounter.ENCDPS;
+        }
         header.querySelector('.encountertitle').innerHTML = encounter.title;
         header.querySelector('.current-zone').innerHTML = encounter.CurrentZoneName;
-        header.querySelector('.raiddps').innerHTML = encdpsValue(encounter['encdps-*']);
         header.querySelector('.duration').innerHTML = encounter.duration;
 
-        container.appendChild(header);
-        // END HEADER CONTENT
+        // set inactive
+        if (!e.detail.isActive) {
+          rdps_max = 0;
+          document.body.classList.add('inactive');
+        } else {
+          document.body.classList.remove('inactive');
+        }
 
-        var names = Object.keys(combatants).slice(0, rows - 1),
+        container.appendChild(header);
+
+        var limit = Math.max(combatants.length, rows),
+          names = Object.keys(combatants).slice(0, rows - 1),
           maxdps = false;
 
         for (var i = 0; i < names.length; i++) {
@@ -628,30 +667,33 @@
             maxdps = parseFloat(combatant.encdps);
           }
 
-          // COMBATENT CONTENT
-          row.querySelector('.job-icon').innerHTML = '<img src="images/' + imgFolder + '/' + jobName(combatant) +
-            '.png" onerror="this.setAttribute(\'src\', \'images/error.png\');">';
-          // row.querySelector('.name').innerHTML = combatant.name;
+          if (combatant.name == 'YOU') {
+            row.classList.add('you');
+          }
+
+          row.querySelector('.tohit').innerHTML = 'ACC' + ' ' + combatant.tohit + '%'; // Accuracy
+          // encDPS html span required
+          // row.querySelector('.dps').innerHTML   = combatant.encdps;
+          row.querySelector('.job-icon').innerHTML = '<img src="images/'+ imgFolder + '/' + jobName(combatant) + '.png" onerror="this.setAttribute(\'src\', \'images/error.png\');">';
           row.querySelector('.name').innerHTML = combatant.name === 'YOU' ? combatantName : combatant.name;
-          row.querySelector('.tohit').innerHTML = 'ACC ' + combatant.tohit + '%'; // Accuracy
-          row.querySelector('.crithit').innerHTML = 'CRIT ' + combatant['crithit%']; // Crithit
           row.querySelector('.encdps').innerHTML = combatant['encdps']; // Encdps
+          row.querySelector('.crithit').innerHTML = 'CRIT' + ' ' + combatant['crithit%']; // Crithit
+          
           row.querySelector('.bar').style.width = ((parseFloat(combatant.encdps) / maxdps) * 100) + '%';
-          // END COMBATENT CONTENT
 
           Object.keys(jobList.jobs).forEach(function (jobKey) {
             if (jobName(combatant) == jobList.jobs[jobKey].job) {
+
               if (jobList.jobs[jobKey].canHeal) {
                 applyStyle(jobList.jobs[jobKey], combatant.OverHealPct)
               } else {
                 applyStyle(jobList.jobs[jobKey])
               }
+
             }
           });
-
           container.appendChild(row);
         }
-
         document.querySelector('#overlay').innerHTML = container.innerHTML;
         // document.querySelector('#overlay').replaceWith(container);
       }
@@ -659,16 +701,13 @@
       document.addEventListener('onOverlayDataUpdate', function (e) {
         update(e);
       });
-
       window.addEventListener('message', function (e) {
         if (e.data.type === 'onOverlayDataUpdate') {
           update(e.data);
         }
       });
 
-      // update({
-      //   detail: bacon
-      // });
+      // update( {detail: bacon} );
     };
   </script>
 </body>
