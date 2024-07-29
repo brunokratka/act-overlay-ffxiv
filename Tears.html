@@ -385,8 +385,8 @@
           },
           rpr: {
             job: 'Rpr',
-            bg: 'rgba(71, 76, 82,1.00)',
-            boxShadow: '0px 0px 6px 1px rgba(254, 250, 132,0.40)'
+            bg: 'rgba(254, 250, 132,0.40)',
+            boxShadow: '0px 0px 6px 1px rgba(71, 76, 82,1.00)'
           },
           vpr: {
             job: 'Vpr',
@@ -630,14 +630,13 @@
           rdps_max = Math.max(rdps_max, rdps);
         }
 
+        var defaultDPSValue = '0';
+        var encDPS = encounter.encdps.length <= 7 ? encounter.encdps : encounter.ENCDPS;
         var header = document.querySelector('#header li').cloneNode(true);
-        if (encounter.encdps.length <= 7) {
-          header.querySelector('.raiddps').innerHTML = encounter.encdps;
-        } else {
-          header.querySelector('.raiddps').innerHTML = encounter.ENCDPS;
-        }
+
         header.querySelector('.encountertitle').innerHTML = encounter.title;
         header.querySelector('.current-zone').innerHTML = encounter.CurrentZoneName;
+        header.querySelector('.raiddps').innerHTML = isNaN(encDPS) ? defaultDPSValue : encDPS;
         header.querySelector('.duration').innerHTML = encounter.duration;
 
         // set inactive
