@@ -7,229 +7,285 @@
 
 <body>
   <style>
-    html{
-        height: 100%;
-        overflow: hidden;
-        border-radius: 10px;
-        font-family: Meiryo;
-        box-sizing: border-box;
-        border-radius: 8px;
-        background-repeat: no-repeat;
-        background-position: bottom right;
-        background-color: rgba(0, 0, 0, 0.00);
+    html {
+      height: 100%;
+      overflow: hidden;
+      border-radius: 10px;
+      font-family: Meiryo;
+      box-sizing: border-box;
+      border-radius: 8px;
+      background-repeat: no-repeat;
+      background-position: bottom right;
+      background-color: rgba(0, 0, 0, 0.00);
+    }
+
+    #overlay {
+      width: 100%;
+      height: 100%;
+      /* margin-top: 35px; */
+      color: #D3D4C2;
+      position: inherit;
+      border-radius: 8px;
+    }
+
+    #header {
+      width: 100%;
+      height: 100%;
+      display: none;
+      font-size: 14px;
+      position: relative;
+      vertical-align: middle;
+    }
+
+    .container {
+      border-radius: 10px;
+      padding: 12px;
+      position: relative;
+      background: linear-gradient(to bottom,
+
+          #474747 0%,
+          /* bright top band */
+          #3b3b3b 8%,
+          /* top fade */
+          #2f2f30 25%,
+          /* center fill */
+          #343434 85%,
+          /* bottom lift start */
+          #3a3a3a 100%
+          /* bottom lift */
+        );
+
+
+      box-shadow:
+        0 0 0 2px #6b5525,
+        0 0 0 4px #3a2e1c,
+        inset 0 2px 3px rgba(0, 0, 0, 0.55),
+        /* top */
+        inset 0 -2px 3px rgba(0, 0, 0, 0.55),
+        /* bottom */
+        inset 2px 0 3px rgba(0, 0, 0, 0.55),
+        /* left */
+        inset -2px 0 3px rgba(0, 0, 0, 0.55),
+        /* right */
+
+        inset -1px -1px 2px rgba(255, 255, 220, 0.12),
+        inset 1px 1px 3px rgba(0, 0, 0, 0.4);
+    }
+
+
+    /* Header divider line */
+    .container::before {
+      content: "";
+      position: absolute;
+      top: 58px;
+      left: 10px;
+      right: 10px;
+      height: 1px;
+
+      /* visible embossed line */
+      background: linear-gradient(to bottom,
+          #1b1b1b 0%,
+          #2e2e2f 100%);
+
+      opacity: 0.85;
+    }
+
+
+    #source {
+      display: none;
+    }
+
+    #progressBar {
+      width: 100%;
+      height: 1px;
+      margin: 0px auto;
+      background: #000;
+      /* shadow: 0px 1px 0px rgb(255,255,255);  */
+    }
+
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    li {
+      padding: 4px;
+      box-sizing: border-box;
+    }
+
+    .job-icon {
+      top: 2px;
+      height: 20px;
+      z-index: 100;
+      margin-left: -4px;
+      position: relative;
+    }
+
+    .job-icon img {
+      width: 20px;
+      height: 20px;
+      z-index: 100;
+    }
+
+    .inactive li .bar {
+      background-color: rgba(255, 255, 255, 0.69);
+    }
+
+    li.combatant {
+      width: 100%;
+      font-size: 12px;
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: column;
+    }
+
+    li .combatant-details {
+      width: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    li .combatant-properties {
+      width: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 2px;
+      position: relative;
+    }
+
+    li .combatant-attributes {
+      display: flex;
+      flex-wrap: nowrap;
+      margin-left: 8px;
+      font-size: 10px;
+    }
+
+    li .combatant-attributes>div {
+      margin-right: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+    }
+
+    li .crithit {
+      position: relative;
+    }
+
+    li .name {
+      font-size: 14px;
+      overflow: hidden;
+      white-space: nowrap;
+      letter-spacing: 1px;
+      display: inline-block;
+      text-overflow: ellipsis;
+    }
+
+    li.raidheader {
+      width: 100%;
+      display: flex;
+      font-size: 18px;
+      flex-wrap: nowrap;
+      margin-bottom: 16px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    li.raidheader>div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    li .encountertitle {
+      font-size: 18px;
+      text-shadow: inset 0px 1px 1px #000;
+    }
+
+    li .current-zone {
+      font-size: 14px;
+      text-shadow: inset 0px 1px 1px #000;
+    }
+
+    li .raiddps {
+      width: 70px;
+      display: block;
+      font-size: 16px;
+      text-align: middle;
+      letter-spacing: 7px;
+      text-shadow: inset 0px 1px 1px #000;
+    }
+
+    li .duration {
+      font-size: 14px;
+      text-shadow: inset 0px 1px 1px #4d4d4d;
+    }
+
+    li .dps {
+      width: 48%;
+      z-index: 100;
+      max-width: 70px;
+      font-size: 16px;
+      text-align: left;
+      margin-left: 0px;
+      margin-right: 1%;
+      color: #D5AD6D;
+      position: relative;
+      display: inline-block;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 10px 10px 31px -14px rgba(0, 0, 0, 0.75);
+      -moz-text-shadow: 10px 10px 31px -14px rgba(0, 0, 0, 0.75);
+      -webkit-text-shadow: 10px 10px 31px -14px rgba(0, 0, 0, 0.75);
+      background: -o-linear-gradient(transparent, transparent);
+      background: -webkit-linear-gradient(transparent, transparent), -webkit-linear-gradient(top, rgba(213, 173, 109, 1) 0%, rgba(213, 173, 109, 1) 26%, rgba(226, 186, 120, 1) 35%, rgba(163, 126, 67, 1) 45%, rgba(145, 112, 59, 1) 61%, rgba(213, 173, 109, 1) 100%);
+    }
+
+    li .bar {
+      width: 100%;
+      height: 1px;
+      margin: 0px;
+      display: block;
+      position: inherit;
+      animation: fullexpand ease-out;
+      -moz-animation: fullexpand ease-out;
+      -webkit-animation: fullexpand ease-out;
+      box-shadow: 0px 0px 6px 1px rgba(255, 0, 0, 0.20);
+      -webkit-box-shadow: 0px 0px 6px 1px rgba(255, 0, 0, 0.20);
+    }
+
+    li .besthit {
+      font-size: 10px;
+      position: relative;
+    }
+
+    @-moz-keyframes fullexpand {
+      0% {
+        width: 0px;
       }
 
-      #overlay{
+      100% {
         width: 100%;
-        height: 100%;
-        /* margin-top: 35px; */
-        color: #D3D4C2;
-        position: inherit;
-        border-radius: 8px;
+      }
+    }
+
+    @-webkit-keyframes fullexpand {
+      0% {
+        width: 0px;
       }
 
-      #header{
+      100% {
         width: 100%;
-        height: 100%;
-        display: none;
-        font-size: 14px;
-        position: relative;
-        vertical-align: middle;
       }
 
-      #source{
-        display: none;
-      }
-
-      #progressBar{
-        width: 100%;
-        height: 1px;
-        margin: 0px auto;
-        background: #000;
-        /* shadow: 0px 1px 0px rgb(255,255,255);  */
-      }
-
-      ol{
-        margin: 0;
-        padding: 0;
-        list-style-type: none;
-      }
-
-      li{
-        padding: 4px;
-        box-sizing: border-box;
-      }
-
-      .job-icon{
-        top: 2px;
-        height: 20px;
-        z-index: 100;
-        margin-left: -4px;
-        position: relative;
-      }
-
-      .job-icon img{
-        width: 20px;
-        height: 20px;
-        z-index: 100;
-      }
-      
-      .inactive li .bar{
-        background-color: rgba(255,255,255,0.69);
-      }
-
-      li.combatant{
-        width: 100%;
-        font-size: 12px;
-        display: flex;
-        flex-wrap: nowrap;
-        flex-direction: column;
-      }
-
-      li .combatant-details{
-        width: 100%;
-        display: flex;
-        flex-wrap: nowrap;
-        flex-direction: row;
-        justify-content: space-between;
-      }
-      li .combatant-properties{
-        width: 100%;
-        display: flex;
-        flex-wrap: nowrap;
-        flex-direction: row;
-        align-items: center;
-        margin-bottom: 2px;
-        position: relative;
-      }
-
-      li .combatant-attributes{
-        display: flex;
-        flex-wrap: nowrap;
-        margin-left: 8px;
-        font-size: 10px;
-      }
-
-      li .combatant-attributes > div {
-        margin-right: 16px;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-      }
-
-      li .crithit{
-        position: relative;
-      }
-
-      li .name{
-        font-size: 14px;
-        overflow: hidden;
-        white-space: nowrap;
-        letter-spacing: 1px;
-        display: inline-block;
-        text-overflow: ellipsis;
-      }
-
-      li.raidheader{
-        width: 100%;
-        display: flex;
-        font-size: 18px;
-        flex-wrap: nowrap;
-        margin-bottom: 16px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      li.raidheader > div{
-        display: flex;
-        flex-direction: column;
-      }
-
-      li .encountertitle{
-        font-size: 18px;
-        text-shadow: inset 0px 1px 1px #000;
-      }
-      li .current-zone{
-        font-size: 14px;
-        text-shadow: inset 0px 1px 1px #000;
-      }
-
-      li .raiddps{
-        width: 70px;
-        display: block;
-        font-size: 16px;
-        text-align: middle;
-        letter-spacing: 7px;
-        text-shadow: inset 0px 1px 1px #000; 
-      }
-
-      li .duration{
-        font-size: 14px;
-        text-shadow: inset 0px 1px 1px #4d4d4d;
-      }
-
-      li .dps{
-        width: 48%;
-        z-index: 100;
-        max-width: 70px;
-        font-size: 16px;
-        text-align: left;
-        margin-left: 0px;
-        margin-right: 1%;
-        color: #D5AD6D;
-        position: relative;
-        display: inline-block;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 10px 10px 31px -14px rgba(0,0,0,0.75);
-        -moz-text-shadow: 10px 10px 31px -14px rgba(0,0,0,0.75);
-        -webkit-text-shadow: 10px 10px 31px -14px rgba(0,0,0,0.75);
-        background: -o-linear-gradient(transparent, transparent);
-        background: -webkit-linear-gradient(transparent, transparent), -webkit-linear-gradient(top, rgba(213,173,109,1) 0%, rgba(213,173,109,1) 26%, rgba(226,186,120,1) 35%, rgba(163,126,67,1) 45%, rgba(145,112,59,1) 61%, rgba(213,173,109,1) 100%);
-      }
-
-      li .bar{
-        width: 100%;
-        height: 1px;
-        margin: 0px;
-        display: block;
-        position: inherit;
-        animation: fullexpand ease-out;
-        -moz-animation: fullexpand ease-out;
-        -webkit-animation: fullexpand ease-out;
-        box-shadow: 0px 0px 6px 1px rgba(255,0,0,0.20);
-        -webkit-box-shadow: 0px 0px 6px 1px rgba(255,0,0,0.20);
-      }
-
-      li .besthit{
-        font-size: 10px;
-        position: relative;
-      }
-
-      @-moz-keyframes fullexpand{
-        0%
-        {
-          width: 0px;
-        }
-        100%
-        {
-          width: 100%;
-        }
-      }
-
-      @-webkit-keyframes fullexpand{
-        0%
-        {
-          width: 0px;
-        }
-        100%
-        {
-          width: 100%;
-        };
-      }
-    </style>
+      ;
+    }
+  </style>
 
 
   <ol id="header">
@@ -262,7 +318,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="combatant-dps">
             <span class="encdps"></span>
           </div>
@@ -566,20 +622,20 @@
 
       function jobWrought(job) {
 
-        if(job){
+        if (job) {
 
           Object.keys(jobList.summons).forEach(function (summon) {
-            if(job.indexOf(jobList.summons[summon] == 0) || job.indexOf(jobList.summons[summon] != -1)) {
+            if (job.indexOf(jobList.summons[summon] == 0) || job.indexOf(jobList.summons[summon] != -1)) {
               return 'PET'
             }
           });
 
-          if(job.indexOf(jobList.companion[Object.keys(jobList.companion)[0]]) != -1){
+          if (job.indexOf(jobList.companion[Object.keys(jobList.companion)[0]]) != -1) {
             return 'CHO'
-          }else{
+          } else {
             return job
           }
-        }else{
+        } else {
           return 'blu'
         }
       }
@@ -657,7 +713,7 @@
 
         var limit = Math.max(combatants.length, rows),
           names = Object.keys(combatants)
-          .slice(0, rows - 1),
+            .slice(0, rows - 1),
           maxdps = false;
 
         for (var i = 0; i < names.length; i++) {
@@ -675,25 +731,25 @@
           row.querySelector('.tohit').innerHTML = 'ACC' + ' ' + combatant.tohit + '%'; // Accuracy
           // encDPS html span required
           // row.querySelector('.dps').innerHTML   = combatant.encdps;
-          row.querySelector('.job-icon').innerHTML = '<img src="images/'+ imgFolder + '/' + jobName(combatant) + '.png" onerror="this.setAttribute(\'src\', \'images/error.png\');">';
+          row.querySelector('.job-icon').innerHTML = '<img src="images/' + imgFolder + '/' + jobName(combatant) + '.png" onerror="this.setAttribute(\'src\', \'images/error.png\');">';
           row.querySelector('.name').innerHTML = combatant.name === 'YOU' ? combatantName : combatant.name;
           row.querySelector('.encdps').innerHTML = combatant['encdps']; // Encdps
           row.querySelector('.crithit').innerHTML = 'CRIT' + ' ' + combatant['crithit%']; // Crithit
-          
+
           row.querySelector('.bar').style.width = ((parseFloat(combatant.encdps) / maxdps) * 100) + '%';
 
           Object.keys(jobList.jobs)
-          .forEach(function (jobKey) {
-            if (jobName(combatant) == jobList.jobs[jobKey].job) {
+            .forEach(function (jobKey) {
+              if (jobName(combatant) == jobList.jobs[jobKey].job) {
 
-              if (jobList.jobs[jobKey].canHeal) {
-                applyStyle(jobList.jobs[jobKey], combatant.OverHealPct)
-              } else {
-                applyStyle(jobList.jobs[jobKey])
+                if (jobList.jobs[jobKey].canHeal) {
+                  applyStyle(jobList.jobs[jobKey], combatant.OverHealPct)
+                } else {
+                  applyStyle(jobList.jobs[jobKey])
+                }
+
               }
-
-            }
-          });
+            });
           container.appendChild(row);
         }
         document.querySelector('#overlay').innerHTML = container.innerHTML;
