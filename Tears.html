@@ -41,6 +41,9 @@
       border-radius: 10px;
       padding: 12px;
       position: relative;
+    }
+
+    .container.background-overlay {
       background: linear-gradient(to bottom,
 
           #474747 0%,
@@ -57,7 +60,7 @@
 
 
       box-shadow:
-        0 0 0 2px #6b5525,
+        0 0 0 2px #8a7341,
         0 0 0 4px #3a2e1c,
         inset 0 2px 3px rgba(0, 0, 0, 0.55),
         /* top */
@@ -74,7 +77,7 @@
 
 
     /* Header divider line */
-    .container::before {
+    .container.background-overlay::before {
       content: "";
       position: absolute;
       top: 58px;
@@ -348,10 +351,23 @@
         rdps_max = 0,
         combatantName = "Tears",
         imgFolder = 'default',
+        backgroundOverlay = true,
         disableCompanion = true; // Enable or disable companion in combatant name
 
       String.prototype.capitalize = function () {
         return this.charAt(0).toUpperCase() + this.slice(1);
+      }
+
+      function removeBackgroundOverlay() {
+        document.getElementsByClassName('container')[0].classList.remove('background-overlay');
+      }
+
+      function setBackgroundOverlay() {
+        if (backgroundOverlay) {
+          document.getElementsByClassName('container')[0].classList.add('background-overlay');
+        } else {
+          removeBackgroundOverlay();
+        }
       }
 
       var jobList = {
@@ -764,6 +780,8 @@
           update(e.data);
         }
       });
+
+      setBackgroundOverlay();
 
       // update( {detail: bacon} );
     };
