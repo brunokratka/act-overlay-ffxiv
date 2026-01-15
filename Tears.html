@@ -19,6 +19,35 @@
       background-color: rgba(0, 0, 0, 0.00);
     }
 
+    body {
+      margin: 0;
+      padding: 8px;
+      box-sizing: border-box;
+      overflow: hidden;
+      position: relative;
+      height: 100%;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .resize-handle {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.6;
+    }
+
+    .resize-handle img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
     #overlay {
       width: 100%;
       height: 100%;
@@ -26,6 +55,8 @@
       color: #D3D4C2;
       position: inherit;
       border-radius: 8px;
+      pointer-events: none;
+      box-sizing: border-box;
     }
 
     #header {
@@ -38,9 +69,14 @@
     }
 
     .container {
+      width: 100%;
+      flex: 1;
+      min-height: 0;
       border-radius: 10px;
       padding: 12px;
       position: relative;
+      pointer-events: none;
+      box-sizing: border-box;
     }
 
     .container.background-overlay {
@@ -110,6 +146,7 @@
       margin: 0;
       padding: 0;
       list-style-type: none;
+      pointer-events: auto;
     }
 
     li {
@@ -141,6 +178,7 @@
       display: flex;
       flex-wrap: nowrap;
       flex-direction: column;
+      pointer-events: auto;
     }
 
     li .combatant-details {
@@ -197,6 +235,8 @@
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+      pointer-events: auto;
+      cursor: pointer;
     }
 
     li.raidheader>div {
@@ -291,7 +331,7 @@
   </style>
 
 
-  <ol id="header">
+  <ol id="header" style="cursor: pointer;">
     <li class="raidheader">
       <div>
         <span class="encountertitle"></span>
@@ -313,10 +353,13 @@
 
             <div class="combatant-attributes">
               <div>
-                <span class="tohit"></span>
+                <!-- accuracy -->
+                <!-- <span class="tohit"></span> -->
+                <!-- critical hit -->
                 <span class="crithit"></span>
               </div>
               <div>
+                <!-- over healing -->
                 <span class="hps"></span>
               </div>
             </div>
@@ -342,6 +385,10 @@
     </ol>
   </div>
 
+  <div class="resize-handle">
+    <img src="images/handle.png" alt="Resize handle">
+  </div>
+
   <script type="text/javascript">
     window.onload = function () {
       'use strict';
@@ -362,8 +409,8 @@
         document.getElementsByClassName('container')[0].classList.remove('background-overlay');
       }
 
-      function setBackgroundOverlay() {
-        if (backgroundOverlay) {
+      function setBackgroundOverlay(addOverlay) {
+        if (backgroundOverlay || addOverlay) {
           document.getElementsByClassName('container')[0].classList.add('background-overlay');
         } else {
           removeBackgroundOverlay();
@@ -744,7 +791,7 @@
             row.classList.add('you');
           }
 
-          row.querySelector('.tohit').innerHTML = 'ACC' + ' ' + combatant.tohit + '%'; // Accuracy
+          // row.querySelector('.tohit').innerHTML = 'ACC' + ' ' + combatant.tohit + '%'; // Accuracy
           // encDPS html span required
           // row.querySelector('.dps').innerHTML   = combatant.encdps;
           row.querySelector('.job-icon').innerHTML = '<img src="images/' + imgFolder + '/' + jobName(combatant) + '.png" onerror="this.setAttribute(\'src\', \'images/error.png\');">';
@@ -775,6 +822,24 @@
       document.addEventListener('onOverlayDataUpdate', function (e) {
         update(e);
       });
+
+      var raidHeader = document.querySelector('#header');
+
+      if (raidHeader) {
+        raidHeader.addEventListener('click', function () {
+          backgroundOverlay = !backgroundOverlay;
+          setBackgroundOverlay();
+        });
+      }
+
+      // Use event delegation for the header that gets cloned into the overlay
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('.raidheader') || e.target.closest('#header')) {
+          backgroundOverlay = !backgroundOverlay;
+          setBackgroundOverlay();
+        }
+      });
+
       window.addEventListener('message', function (e) {
         if (e.data.type === 'onOverlayDataUpdate') {
           update(e.data);
